@@ -1,6 +1,7 @@
 import uchicago.src.sim.engine.Schedule;
 import uchicago.src.sim.engine.SimModelImpl;
 import uchicago.src.sim.engine.SimInit;
+import uchicago.src.sim.gui.DisplaySurface;
 
 /**
  * Class that implements the simulation model for the rabbits grass
@@ -35,7 +36,10 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 		//Attributs supplémentaires
 		private int numGrass; //(Pas sûr qu'il soit utile)
 		private int numRabbits;//(Same)
+		
+		//Attributs internes dont l'utilisateur n'a pas besoin 
 		private RabbitsGrassSimulationSpace grassSpace;
+		private DisplaySurface displaySurf;
 		
 		
 		//Méthodes classiques d'un model
@@ -78,6 +82,14 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 		public void setup() {
 			System.out.println("Running setup");
 			grassSpace = null;
+			
+			if (displaySurf != null) {
+				displaySurf.dispose();
+			}
+			displaySurf = null;
+			
+			displaySurf = new DisplaySurface(this, "RabbitsGrass Mode Window 1");
+			registerDisplaySurface("RabbitsGrass Model Window 1",displaySurf);
 		}
 		
 		
