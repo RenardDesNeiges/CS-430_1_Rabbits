@@ -10,10 +10,35 @@ import uchicago.src.sim.engine.SimInit;
  *
  * @author 
  */
-
+/*Lors du rajout d'un attribut, ne pas oublier de :
+ * (1) Ajouter le getter,
+ * (2) Ajouter le setter,
+ * (3) Ajouter le nom de l'attribut à la liste rendue par "getInitParam()"
+ * Les getters et les setters sont tout en bas (vue que se sont les méthodes les moins intéressantes).
+ * Enfin c'est pas obligé (genre j'ai fait aucune des trois étapes pour "grassSpace"), mais c'est 
+ * assez bien comme routine je trouve.
+ * 
+ */
 
 public class RabbitsGrassSimulationModel extends SimModelImpl {		
-
+		
+		//Attributs obligatoires (demandés par le prof)
+		private int gridSize;
+		private int numInitRabbits;
+		private int numInitGrass;
+		private double grassGrowthRate;
+		private int birthTreshold;
+		
+		//Valeurs par défaults
+		private static final int GRIDSIZE = 20;
+		
+		//Attributs supplémentaires
+		private int numGrass; //(Pas sûr qu'il soit utile)
+		private int numRabbits;//(Same)
+		private RabbitsGrassSimulationSpace grassSpace;
+		
+		
+		//Méthodes classiques d'un model
 		public static void main(String[] args) {
 			
 			System.out.println("Rabbit skeleton");
@@ -28,31 +53,109 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 			
 		}
 
-		public void begin() {
-			// TODO Auto-generated method stub
+		public void begin() {//Standard begin method layout
+			buildModel();
+			buildSchedule();
+			buildDisplay();
 			
 		}
-
-		public String[] getInitParam() {
-			// TODO Auto-generated method stub
-			// Parameters to be set by users via the Repast UI slider bar
-			// Do "not" modify the parameters names provided in the skeleton code, you can add more if you want 
-			String[] params = { "GridSize", "NumInitRabbits", "NumInitGrass", "GrassGrowthRate", "BirthThreshold"};
-			return params;
+		
+		public void buildModel() {
+			System.out.println("Running BuildModel");
+			grassSpace = new RabbitsGrassSimulationSpace(gridSize);
+			grassSpace.growGrass(numInitGrass);
+			
+		}
+		
+		public void buildSchedule() {
+			System.out.println("Running BuildSchedule");
+		}
+		
+		public void buildDisplay() {
+			System.out.println("Running BuildDisplay");
 		}
 
+		public void setup() {
+			System.out.println("Running setup");
+			grassSpace = null;
+		}
+		
+		
+		
+		
+		//Setters pour chaque attribut
+		public void setGridSize(int size) {
+			gridSize = size;
+		}
+		
+		public void setNumInitRabbits(int rab){
+			numInitRabbits = rab;
+		}
+		
+		public void setNumInitGrass(int grass) {
+			numInitGrass = grass;
+		}
+		
+		public void setGrassGrowthRate(int rate) {
+			grassGrowthRate = rate;
+		}
+		
+		public void setBirthTreshold(int treshold) {
+			birthTreshold = treshold;
+		}
+		
+		public void setNumRabbits(int num) {
+			numRabbits =num;
+		}
+		
+		public void setNumGrass(int num) {
+			numGrass = num;
+		}
+		
+		
+		
+		//Getters pour chaque attribut (tenir à jour)
 		public String getName() {
 			// TODO Auto-generated method stub
-			return null;
+			return "RabbitsGrass Model";
 		}
 
 		public Schedule getSchedule() {
 			// TODO Auto-generated method stub
 			return null;
 		}
-
-		public void setup() {
-			// TODO Auto-generated method stub
-			
+		
+		public int getGridSize() {
+			return gridSize;
+		}
+		
+		public int getNumInitRabbits() {
+			return numInitRabbits;
+		}
+		
+		public int getNumInitGrass() {
+			return numInitGrass;
+		}
+		
+		public double getGrassGrowthRate() {
+			return grassGrowthRate;
+		}
+		
+		public int getBirthTreshold() {
+			return birthTreshold;
+		}
+		
+		public int getNumRabbits() {
+			return numRabbits;
+		}
+		
+		public int getNumGrass() {
+			return numGrass;
+		}
+		
+		public String[] getInitParam() { 
+			String[] params = { "GridSize", "NumInitRabbits", "NumInitGrass", "GrassGrowthRate", "BirthThreshold",
+								"NumRabbits", "NumGrass"};
+			return params;
 		}
 }
