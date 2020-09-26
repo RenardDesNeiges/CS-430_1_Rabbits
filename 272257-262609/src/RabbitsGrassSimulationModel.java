@@ -1,7 +1,15 @@
+import uchicago.src.sim.engine.BasicAction;
 import uchicago.src.sim.engine.Schedule;
 import uchicago.src.sim.engine.SimModelImpl;
 import uchicago.src.sim.engine.SimInit;
 import uchicago.src.sim.gui.DisplaySurface;
+import uchicago.src.sim.gui.ColorMap;
+import uchicago.src.sim.gui.Object2DDisplay;
+import uchicago.src.sim.gui.Value2DDisplay;
+import uchicago.src.sim.util.SimUtilities;
+
+import java.awt.Color;
+import java.util.ArrayList;
 
 /**
  * Class that implements the simulation model for the rabbits grass
@@ -23,23 +31,33 @@ import uchicago.src.sim.gui.DisplaySurface;
 
 public class RabbitsGrassSimulationModel extends SimModelImpl {		
 		
+	
 		//Attributs obligatoires (demandés par le prof)
-		private int gridSize;
-		private int numInitRabbits;
-		private int numInitGrass;
-		private double grassGrowthRate;
+		private int gridSize = GRIDSIZE;
+		private int numInitRabbits = NUM_INIT_RABBITS;
+		private int numInitGrass = NUM_INIT_GRASS;
+		private int grassGrowthRate = GROWTHRATE;
 		private int birthTreshold;
 		
 		//Valeurs par défaults
-		private static final int GRIDSIZE = 20;
+		private static final int GRIDSIZE = 20;//Donnée par le prof 
+		private static final int NUM_INIT_RABBITS = 30;
+		private static final int NUM_INIT_GRASS = 100;
+		private static final int GROWTHRATE = 50;//Exemple donné par le prof
+		private static final int RABBITS_MAX_ENERGY = 5;//Au hasard
+		
 		
 		//Attributs supplémentaires
-		private int numGrass; //(Pas sûr qu'il soit utile)
-		private int numRabbits;//(Same)
+		private int rabbitsMaxEnergy = RABBITS_MAX_ENERGY;
 		
-		//Attributs internes dont l'utilisateur n'a pas besoin 
+		
+		/*Attributs internes pour une simul'
+		 * Pas de getter et setter pour ces attributs à priori
+		 */
 		private RabbitsGrassSimulationSpace grassSpace;
 		private DisplaySurface displaySurf;
+		private ArrayList<RabbitsGrassSimulationAgent> rabbitsList;
+		private Schedule schedule;
 		
 		
 		//Méthodes classiques d'un model
@@ -61,6 +79,7 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 			buildModel();
 			buildSchedule();
 			buildDisplay();
+			displaySurf.display();
 			
 		}
 		
@@ -69,14 +88,63 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 			grassSpace = new RabbitsGrassSimulationSpace(gridSize);
 			grassSpace.growGrass(numInitGrass);
 			
+			for(int i = 0;i < numInitRabbits; i++) {
+				addNewRabbits();
+			}
+			
+			for (int i = 0; i < rabbitsList.size(); i++) {
+				RabbitsGrassSimulationAgent bunny = (RabbitsGrassSimulationAgent)rabbitsList.get(i);
+				bunny.report();
+			}
 		}
 		
 		public void buildSchedule() {
 			System.out.println("Running BuildSchedule");
+			
+			class RabbitsGrassStep extends BasicAction {
+				public void execute() {
+					SimUtilities.shuffle(rabbitsList);
+					for(int i = 0; i < rabbitsList.size(); i++) {
+						RabbitsGrassSimulationAgent bunny = (RabbitsGrassSimulationAgent) rabbitsList.get(i);
+						bunny.step();
+					}
+					int deadRabbits = reapDeadRabbits();
+					//System.out.println("Number of dead rabbits this turn: "+deadRabbits);
+					
+					
+					
+					displaySurf.updateDisplay();
+				}
+				
+			}
+			schedule.scheduleActionBeginning(0, new RabbitsGrassStep());
+			
+			
+			class RabbitsGrassCountLiving extends BasicAction {
+				public void execute() {
+					countLivingRabbits();
+				}
+			}
+			schedule.scheduleActionAt(10, new RabbitsGrassCountLiving());
+			
 		}
 		
-		public void buildDisplay() {
+		public void buildDisplay() {// Pas trop compris comment ça marche, j'avoue
 			System.out.println("Running BuildDisplay");
+			ColorMap map = new ColorMap();
+			
+			for(int i = 1; i<16; i++) {
+				map.mapColor(i, new Color(0,(int) (i*8+127),0));
+			}
+			
+			Object2DDisplay displayRabbits = new Object2DDisplay(grassSpace.getRabbitsLand());
+			displayRabbits.setObjectList(rabbitsList);
+			
+			map.mapColor(0,Color.black);
+			Value2DDisplay displayGrass = new Value2DDisplay(grassSpace.getGrassLand(), map);
+			
+			displaySurf.addDisplayable(displayRabbits, "Rabbits");
+			displaySurf.addDisplayable(displayGrass, "Grass");
 		}
 
 		public void setup() {
@@ -86,14 +154,45 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 			if (displaySurf != null) {
 				displaySurf.dispose();
 			}
+			
 			displaySurf = null;
+			rabbitsList = new ArrayList<RabbitsGrassSimulationAgent>();
+			schedule = new Schedule(1);
 			
 			displaySurf = new DisplaySurface(this, "RabbitsGrass Mode Window 1");
 			registerDisplaySurface("RabbitsGrass Model Window 1",displaySurf);
 		}
 		
+		private void addNewRabbits() {
+			RabbitsGrassSimulationAgent bunny = new RabbitsGrassSimulationAgent(rabbitsMaxEnergy);
+			rabbitsList.add(bunny);
+			grassSpace.addRabbit(bunny);
+		}
 		
+		private int countLivingRabbits() {
+			int livingRabbits = 0;
+			for(int i = 0; i < rabbitsList.size(); i++) {
+				RabbitsGrassSimulationAgent bunny = (RabbitsGrassSimulationAgent) rabbitsList.get(i);
+				if(bunny.getEnergy() > 0) livingRabbits++;
+			}
+			
+			System.out.println("Number of living Rabbits is: " + livingRabbits);
+			
+			return livingRabbits;
+		}
 		
+		private int reapDeadRabbits() {
+			int count = 0;
+			for(int i = 0; i < rabbitsList.size(); i++) {
+				RabbitsGrassSimulationAgent bunny = (RabbitsGrassSimulationAgent) rabbitsList.get(i);
+				if(bunny.getEnergy() <= 0) {
+					grassSpace.removeRabbitAt(bunny.getX(),bunny.getY());
+					rabbitsList.remove(i);
+					count++;
+				}
+			}
+			return count;
+		}
 		
 		//Setters pour chaque attribut
 		public void setGridSize(int size) {
@@ -116,25 +215,18 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 			birthTreshold = treshold;
 		}
 		
-		public void setNumRabbits(int num) {
-			numRabbits =num;
+		public void setRabbitsMaxEnergy(int max) {
+			rabbitsMaxEnergy = max;
 		}
-		
-		public void setNumGrass(int num) {
-			numGrass = num;
-		}
-		
 		
 		
 		//Getters pour chaque attribut (tenir à jour)
 		public String getName() {
-			// TODO Auto-generated method stub
 			return "RabbitsGrass Model";
 		}
 
 		public Schedule getSchedule() {
-			// TODO Auto-generated method stub
-			return null;
+			return schedule;
 		}
 		
 		public int getGridSize() {
@@ -156,18 +248,14 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 		public int getBirthTreshold() {
 			return birthTreshold;
 		}
-		
-		public int getNumRabbits() {
-			return numRabbits;
-		}
-		
-		public int getNumGrass() {
-			return numGrass;
-		}
-		
+			
 		public String[] getInitParam() { 
-			String[] params = { "GridSize", "NumInitRabbits", "NumInitGrass", "GrassGrowthRate", "BirthThreshold",
-								"NumRabbits", "NumGrass"};
+			String[] params = { "GridSize", "NumInitRabbits", "NumInitGrass", "GrassGrowthRate", "BirthThreshold"
+										  , "RabbitsMaxEnergy"};
 			return params;
+		}
+
+		public int getRabbitsMaxEnergy() {
+			return rabbitsMaxEnergy;
 		}
 }
