@@ -50,6 +50,18 @@ public class RabbitsGrassSimulationSpace {
 		 */
 	}
 	
+	public int getTotalGrass() {
+		int res = 0;
+		for(int i = 0; i < size; i++) {
+			for(int j = 0; j < size; j++) {
+				if(getGrassAt(i,j)==1) {
+					res++;
+				}
+			}
+		}
+		return res;
+	}
+	//Methodes faisant le lien avec les lapins
 	public boolean isCellOcuppied(int x,int y) {
 		boolean res = false;
 		if(rabbitsLand.getObjectAt(x, y)!=null) {
@@ -84,9 +96,7 @@ public class RabbitsGrassSimulationSpace {
 		}
 		return added;
 	}
-		
 	
-	//Methodes faisant le lien avec les lapins
 	public void removeRabbitAt(int x, int y) {
 		rabbitsLand.putObjectAt(x,y, null);
 	}
@@ -102,17 +112,14 @@ public class RabbitsGrassSimulationSpace {
 		return grass;
 	}
 	
-	public boolean moveRabbit(int x, int y, int newX, int newY) {
-		boolean moved = false;
+	public void moveRabbit(int x, int y, int newX, int newY) {
 		
 		if(!isCellOcuppied(newX,newY)) {
 			RabbitsGrassSimulationAgent bunny = (RabbitsGrassSimulationAgent)rabbitsLand.getObjectAt(x, y);
 			removeRabbitAt(x,y);
 			rabbitsLand.putObjectAt(newX, newY, bunny);
 			bunny.setXY(newX, newY);
-			moved = true;
 		}
-		return moved;
 	}
 	
 	//Getters

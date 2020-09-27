@@ -36,8 +36,8 @@ public class RabbitsGrassSimulationAgent implements Drawable {
 		arg0.drawFastOval(Color.white);
 	}
 	
-	public boolean tryMove(int newX, int newY) {
-		return space.moveRabbit(x,y,newX,newY);
+	public void tryMove(int newX, int newY) {
+		space.moveRabbit(x,y,newX,newY);
 	}
 	
 	public RabbitsGrassSimulationAgent giveBirth() {
@@ -86,12 +86,11 @@ public class RabbitsGrassSimulationAgent implements Drawable {
 		int newX = (x+vX+size)%size;
 		int newY = (y+vY+size)%size;
 		
-		if(tryMove(newX,newY)) {
-			energy += space.eatGrassAt(newX, newY,grassEnergy);
-			if(energy > 20) {
+		tryMove(newX,newY);
+		energy += space.eatGrassAt(x, y,grassEnergy);
+		if(energy > 20) {
 				energy = 20;
 			}
-		}
 		setVxVy();
 	}
 
