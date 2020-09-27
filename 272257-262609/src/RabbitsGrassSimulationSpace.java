@@ -30,12 +30,19 @@ public class RabbitsGrassSimulationSpace {
 	public void growGrass(int numGrass) {
 		
 		for(int i = 0;i<numGrass;i++) {
-			int x = (int)(Math.random()*size);
-			int y = (int)(Math.random()*size);
-			int currentGrass = getGrassAt(x,y);
-			grassLand.putObjectAt(x, y, currentGrass+1);
+			boolean growned = false;
+			int count = 0;
+			while(!growned && count < 10*size) {
+				int x = (int)(Math.random()*size);
+				int y = (int)(Math.random()*size);
+				int j = (int)grassLand.getObjectAt(x, y);
+				if(j == 0) {
+					grassLand.putObjectAt(x, y, 1);
+					growned = true;
+				}
+				count++;
+			}
 		}
-		
 		/*Le reste n'est pas trop dûr à implémenter,
 		 * mais je n'ai pas compris s'il pouvait y avoir
 		 * plus d'une unité d'herbes en même temps sur la même case.

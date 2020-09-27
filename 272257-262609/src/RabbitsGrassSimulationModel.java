@@ -38,17 +38,16 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 		private int numInitGrass = NUM_INIT_GRASS;
 		private int grassGrowthRate = GROWTHRATE;
 		private int birthTreshold;
+		private int grassEnergy;
 		
 		//Valeurs par défaults
 		private static final int GRIDSIZE = 20;//Donnée par le prof 
 		private static final int NUM_INIT_RABBITS = 30;
 		private static final int NUM_INIT_GRASS = 100;
 		private static final int GROWTHRATE = 50;//Exemple donné par le prof
-		private static final int RABBITS_MAX_ENERGY = 5;//Au hasard
 		
 		
 		//Attributs supplémentaires
-		private int rabbitsMaxEnergy = RABBITS_MAX_ENERGY;
 		
 		
 		/*Attributs internes pour une simul'
@@ -104,11 +103,14 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 			class RabbitsGrassStep extends BasicAction {
 				public void execute() {
 					SimUtilities.shuffle(rabbitsList);
+					
+					grassSpace.growGrass(grassGrowthRate);
+					
 					for(int i = 0; i < rabbitsList.size(); i++) {
 						RabbitsGrassSimulationAgent bunny = (RabbitsGrassSimulationAgent) rabbitsList.get(i);
-						bunny.step();
+						bunny.step(birthTreshold);
 					}
-					int deadRabbits = reapDeadRabbits();
+					reapDeadRabbits();
 					//System.out.println("Number of dead rabbits this turn: "+deadRabbits);
 					
 					
@@ -125,7 +127,7 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 					countLivingRabbits();
 				}
 			}
-			schedule.scheduleActionAt(10, new RabbitsGrassCountLiving());
+			schedule.scheduleActionBeginning(0, new RabbitsGrassCountLiving());
 			
 		}
 		
@@ -143,8 +145,9 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 			map.mapColor(0,Color.black);
 			Value2DDisplay displayGrass = new Value2DDisplay(grassSpace.getGrassLand(), map);
 			
-			displaySurf.addDisplayable(displayRabbits, "Rabbits");
 			displaySurf.addDisplayable(displayGrass, "Grass");
+			displaySurf.addDisplayable(displayRabbits, "Rabbits");
+			
 		}
 
 		public void setup() {
@@ -164,7 +167,7 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 		}
 		
 		private void addNewRabbits() {
-			RabbitsGrassSimulationAgent bunny = new RabbitsGrassSimulationAgent(rabbitsMaxEnergy);
+			RabbitsGrassSimulationAgent bunny = new RabbitsGrassSimulationAgent();
 			rabbitsList.add(bunny);
 			grassSpace.addRabbit(bunny);
 		}
@@ -215,10 +218,9 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 			birthTreshold = treshold;
 		}
 		
-		public void setRabbitsMaxEnergy(int max) {
-			rabbitsMaxEnergy = max;
+		public void setGrassEnergy(int ge) {
+			grassEnergy = ge;
 		}
-		
 		
 		//Getters pour chaque attribut (tenir à jour)
 		public String getName() {
@@ -250,12 +252,11 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 		}
 			
 		public String[] getInitParam() { 
-			String[] params = { "GridSize", "NumInitRabbits", "NumInitGrass", "GrassGrowthRate", "BirthThreshold"
-										  , "RabbitsMaxEnergy"};
+			String[] params = { "GridSize", "NumInitRabbits", "NumInitGrass", "GrassGrowthRate", "BirthThreshold", "GrassEnergy"};
 			return params;
 		}
 
-		public int getRabbitsMaxEnergy() {
-			return rabbitsMaxEnergy;
+		public int getGrassEnergy() {
+			return grassEnergy;
 		}
 }
