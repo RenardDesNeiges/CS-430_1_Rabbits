@@ -1,10 +1,10 @@
 import uchicago.src.sim.gui.Drawable;
 import uchicago.src.sim.gui.SimGraphics;
-import uchicago.src.sim.space.Object2DGrid;
 
 import java.awt.Color;
 import java.lang.String;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Class that implements the simulation agent for the rabbits grass simulation.
@@ -14,7 +14,7 @@ import java.util.Vector;
 public class RabbitsGrassSimulationAgent implements Drawable {
 	
 	private RabbitsGrassSimulationSpace space; 
-	private int energy;
+	private double energy;
 	private int x;
 	private int y;
 	private int ID;
@@ -24,7 +24,7 @@ public class RabbitsGrassSimulationAgent implements Drawable {
 	private static String DIR = "NESW"; 
 	
 	public RabbitsGrassSimulationAgent() {
-		energy = 20;
+		energy = 20*Math.random();
 		x = -1;
 		y = -1;
 		IDNUMBER++;
@@ -40,48 +40,59 @@ public class RabbitsGrassSimulationAgent implements Drawable {
 		return space.moveRabbit(x,y,newX,newY);
 	}
 	
-	public void giveBirth() {
+	public RabbitsGrassSimulationAgent giveBirth() {
 		RabbitsGrassSimulationAgent bunny = new RabbitsGrassSimulationAgent();
 		int i = (int)(Math.random()*4);
 		char dir = DIR.charAt(i);
+		ArrayList<Integer> dir2 = charToVector(dir);
+		int count = 0;
+		int size = space.getSize();
+		int countLimit = 50;
+		while(space.isCellOcuppied((x+dir2.get(0)+size)%size, (y+dir2.get(1)+size)%size) && count < countLimit){
+			i = (int)(Math.random()*4);
+			dir = DIR.charAt(i);
+			dir2 = charToVector(dir);
+			count++;
+		}
+		if(count < 10) {
+			bunny.setXY((x+dir2.get(0)+size)%size, (y+dir2.get(1)+size)%size);
+		}
+		return bunny;
 	
 	}
 	
-	public Vector charToVector(char dir) {
-		Vector res;
+	public ArrayList<Integer> charToVector(char dir) {
+		ArrayList<Integer> res;
 		if(dir == 'N') {
-			res = new Vector(0,1); 
+			res = new ArrayList<Integer>(Arrays.asList(0,1)); 
 		}
 		else if(dir == 'E') {
-			res = new Vector(1,0);
+			res = new ArrayList<Integer>(Arrays.asList(1,0));
 		}
 		else if(dir == 'S') {
-			res = new Vector(0,-1);
+			res = new ArrayList<Integer>(Arrays.asList(0,-1));
 		}
 		else {
-			res = new Vector(-1,0);
+			res = new ArrayList<Integer>(Arrays.asList(-1,0));
 		}
 		return res;
 	}
 	
-	public void step(int treshold) {
+	public void step(double grassEnergy) {
 		energy--;
 		
-		if(energy >= treshold) {
-			giveBirth();
-		}
+		int size = space.getSize();
 		
-		else {
-			int size = space.getSize();
+		int newX = (x+vX+size)%size;
+		int newY = (y+vY+size)%size;
 		
-			int newX = (x+vX+size)%size;
-			int newY = (y+vY+size)%size;
-		
-			if(tryMove(newX,newY)) {
-				energy += space.eatGrassAt(newX, newY);
+		if(tryMove(newX,newY)) {
+			energy += space.eatGrassAt(newX, newY,grassEnergy);
+			if(energy > 20) {
+				energy = 20;
 			}
-			setVxVy();
 		}
+		setVxVy();
 	}
 
 	
@@ -98,7 +109,7 @@ public class RabbitsGrassSimulationAgent implements Drawable {
 		return ID;
 	}
 	
-	public int getEnergy() {
+	public double getEnergy() {
 		return energy;
 	}
 	

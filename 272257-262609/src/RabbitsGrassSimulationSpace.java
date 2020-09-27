@@ -13,7 +13,7 @@ public class RabbitsGrassSimulationSpace {
 	private Object2DGrid rabbitsLand;
 	private int size;//Note that both grassLand and rabbitsLand are squares of the same size
 	
-	//Méthodes ne concernant que l'espace
+	//Methodes ne concernant que l'espace
 	public RabbitsGrassSimulationSpace(int size2) {
 		size = size2;
 		int zero = 0;
@@ -62,11 +62,18 @@ public class RabbitsGrassSimulationSpace {
 	public boolean addRabbit(RabbitsGrassSimulationAgent bunny) {
 		boolean added = false;
 		int count = 0;
-		int countLimit = 10*size*size;
+		int countLimit = 1000*size*size;
+		int x = bunny.getX();
+		int y = bunny.getY();
 		
-		while((added == false) && (count < countLimit)) {
-			int x = (int)(Math.random()*size);
-			int y = (int)(Math.random()*size);
+		
+		if(x == -1 && y == -1) {
+			x = (int)(Math.random()*size);
+			y = (int)(Math.random()*size);
+			
+		}
+		
+		while(added == false && (count < countLimit)) {
 			if(isCellOcuppied(x,y) == false) {
 				rabbitsLand.putObjectAt(x, y, bunny);
 				added = true;
@@ -77,19 +84,19 @@ public class RabbitsGrassSimulationSpace {
 		}
 		return added;
 	}
+		
 	
-	
-	//Méthodes faisant le lien avec les lapins
+	//Methodes faisant le lien avec les lapins
 	public void removeRabbitAt(int x, int y) {
 		rabbitsLand.putObjectAt(x,y, null);
 	}
 	
-	public int eatGrassAt(int x,int y) {
-		int grass = getGrassAt(x,y);
+	public double eatGrassAt(int x,int y, double grassEnergy) {
+		double grass = getGrassAt(x,y);
 		
 		if(grass > 0) {
-			grassLand.putObjectAt(x, y, grass-1);
-			grass = 1;
+			grassLand.putObjectAt(x, y, (int)(grass-1));
+			grass = grassEnergy;
 		}
 		
 		return grass;
@@ -97,7 +104,6 @@ public class RabbitsGrassSimulationSpace {
 	
 	public boolean moveRabbit(int x, int y, int newX, int newY) {
 		boolean moved = false;
-		if(!isCellOcuppied(x,y)) System.out.println("Un lapin a été perdu de vue.");
 		
 		if(!isCellOcuppied(newX,newY)) {
 			RabbitsGrassSimulationAgent bunny = (RabbitsGrassSimulationAgent)rabbitsLand.getObjectAt(x, y);
