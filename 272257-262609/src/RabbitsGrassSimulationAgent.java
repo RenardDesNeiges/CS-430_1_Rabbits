@@ -21,10 +21,11 @@ public class RabbitsGrassSimulationAgent implements Drawable {
 	private int vX;
 	private int vY;
 	private static int IDNUMBER = 0;
+	private static int MAXRABBITENERGY = 20;
 	private static String DIR = "NESW"; 
 	
 	public RabbitsGrassSimulationAgent() {
-		energy = 20*Math.random();
+		energy = MAXRABBITENERGY*Math.random();
 		x = -1;
 		y = -1;
 		IDNUMBER++;
@@ -92,8 +93,8 @@ public class RabbitsGrassSimulationAgent implements Drawable {
 		
 		tryMove(newX,newY);
 		energy += space.eatGrassAt(x, y,grassEnergy);
-		if(energy > 20) {
-				energy = 20;
+		if(energy > MAXRABBITENERGY) {
+				energy = MAXRABBITENERGY;
 			}
 		setVxVy();
 	}

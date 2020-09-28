@@ -31,15 +31,15 @@ public class RabbitsGrassSimulationSpace {
 	public void growGrass(int numGrass) {
 		
 		for(int i = 0;i<numGrass;i++) {
-			boolean growned = false;
+			boolean grown = false;
 			int count = 0;
-			while(!growned && count < 10*size) {
+			while(!grown && count < 10*size) {
 				int x = (int)(Math.random()*size);
 				int y = (int)(Math.random()*size);
 				int j = (int)grassLand.getObjectAt(x, y);
 				if(j == 0) {
 					grassLand.putObjectAt(x, y, 1);
-					growned = true;
+					grown = true;
 				}
 				count++;
 			}

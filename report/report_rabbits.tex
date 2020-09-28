@@ -35,11 +35,27 @@
 
 \section{Implementation}
 
+This section describes the main assumptions that were made in order to implement the simulation described on the Moodle.
+
 \subsection{Assumptions}
 % Describe the assumptions of your world model and implementation (e.g. is the grass amount bounded in each cell) %
 
+\subsubsection{Implementation of grass and of it's growth}
+
+There can be either $1$ or $0$ unit of grass per cell. Initially the model is initialized with a user-set \textit{NumInitGrass} (default $100$) number of grass cells. Then at each simulation tick \textit{GrassGrowthRate} (default $50$) units of grass are added to empty cells if possible. This value is user defined and modifiable throughout the simulation.
+
+\subsubsection{Implementation of the movement of Rabbits and of collisions}
+
+At each tick each alive rabbit tries to move to a random cell picked among the 4 cells adjacent to it's location. If it tries to move to a cell where another rabbit is present, if the cell is empty it moves to it, if it is already occupied it doesn't move for this turn. Regardless of whether it actually moved or not the rabbit loses $1$ energy unit per tick.
+
+\subsubsection{Implementation of feeding, energy and reproduction}
+
+Each rabbit has an energy value $e \in [0,20]$
+
 \subsection{Implementation Remarks}
 % Provide important details about your implementation, such as handling of boundary conditions %
+
+%%talk about rabbit shuffling
 
 \section{Results}
 % In this section, you study and describe how different variables (e.g. birth threshold, grass growth rate etc.) or combinations of variables influence the results. Different experiments with different settings are described below with your observations and analysis
