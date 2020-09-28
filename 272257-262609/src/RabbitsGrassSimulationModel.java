@@ -87,7 +87,7 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 		//Standard model methods
 		public static void main(String[] args) {
 			
-			System.out.println("Rabbit skeleton");
+			System.out.println("Rabbit-Grass Simulation 272257-262609 Group Submission");
 
 			SimInit init = new SimInit();
 			RabbitsGrassSimulationModel model = new RabbitsGrassSimulationModel();
@@ -159,9 +159,10 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 				public StepByStep() {
 					addAction(new GrassGrowth());
 					addAction(new RabbitsStep());
-					addAction(new GraphRecord());
+					//addAction(new GraphRecord());
 				}
 			}
+
 			schedule.scheduleActionBeginning(0, new StepByStep());
 			
 			class RabbitsGrassUpdateGrassInSpace extends BasicAction{
@@ -169,7 +170,7 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 					amountOfGrassInSpace.step();
 				}
 			}
-			schedule.scheduleActionAtInterval(5,new RabbitsGrassUpdateGrassInSpace());
+			schedule.scheduleActionAtInterval(1,new RabbitsGrassUpdateGrassInSpace());
 			
 			class ExportGraph extends BasicAction{
 				public void execute() {
@@ -179,7 +180,7 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 			schedule.scheduleActionAtEnd(new ExportGraph());
 		}
 		
-		public void buildDisplay() {// Pas trop compris comment �a marche, j'avoue
+		public void buildDisplay() {
 			System.out.println("Running BuildDisplay");
 			ColorMap map = new ColorMap();
 			
@@ -216,7 +217,7 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 			
 			//Creating Displays
 			displaySurf = new DisplaySurface(this, "RabbitsGrass Mode Window 1");
-			amountOfGrassInSpace = new OpenSequenceGraph("Amount Of Grass In Space",this);
+			amountOfGrassInSpace = new OpenSequenceGraph("Evolution of the System",this);
 			
 			//Register Displays
 			registerDisplaySurface("RabbitsGrass Model Window 1",displaySurf);

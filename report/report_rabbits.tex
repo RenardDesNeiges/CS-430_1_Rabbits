@@ -5,11 +5,30 @@
 \usepackage[top=0.8in, bottom=0.8in, left=0.8in, right=0.8in]{geometry}
 % Add other packages here %
 
+%%Special equation notation sauce (not sure if I'll need it but it's nice not to have to think about it later)
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+%% declaring abs so that it works nicely
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}%
+
+% Swap the definition of \abs* and \norm*, so that \abs
+% and \norm resizes the size of the brackets, and the 
+% starred version does not.
+\makeatletter
+\let\oldabs\abs
+\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+%
+\let\oldnorm\norm
+\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+\makeatother
+
 
 
 % Put your group number and names in the author field %
 \title{\bf Exercise 1.\\ Implementing a first Application in RePast: A Rabbits Grass Simulation.}
-\author{Group \textnumero: Student 1, Student 2}
+\author{Group \textnumero: 272257, 262609}
 
 \begin{document}
 \maketitle
