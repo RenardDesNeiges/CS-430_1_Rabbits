@@ -42,6 +42,10 @@ public class RabbitsGrassSimulationAgent implements Drawable {
 	
 	public RabbitsGrassSimulationAgent giveBirth() {
 		RabbitsGrassSimulationAgent bunny = new RabbitsGrassSimulationAgent();
+		double e = energy*Math.random();
+		bunny.setEnergy(e);
+		energy -= e;
+		
 		int i = (int)(Math.random()*4);
 		char dir = DIR.charAt(i);
 		ArrayList<Integer> dir2 = charToVector(dir);
@@ -148,5 +152,9 @@ public class RabbitsGrassSimulationAgent implements Drawable {
 	public void setXY(int newX,int newY) {
 		x = newX;
 		y = newY;
+	}
+	
+	public void setEnergy(double e) {
+		energy = e;
 	}
 }
