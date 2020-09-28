@@ -19,24 +19,19 @@ import java.util.ArrayList;
  * Class that implements the simulation model for the rabbits grass
  * simulation.  This is the first class which needs to be setup in
  * order to run Repast simulation. It manages the entire RePast
- * environment and the simulation.
- *
- * @author 
+ * environment and the simulation. 
  */
-/*Lors du rajout d'un attribut, ne pas oublier de :
- * (1) Ajouter le getter,
- * (2) Ajouter le setter,
- * (3) Ajouter le nom de l'attribut � la liste rendue par "getInitParam()"
- * Les getters et les setters sont tout en bas (vue que se sont les m�thodes les moins int�ressantes).
- * Enfin c'est pas oblig� (genre j'ai fait aucune des trois �tapes pour "grassSpace"), mais c'est 
- * assez bien comme routine je trouve.
- * 
+
+/*When implement ting a new attribute do not forget to :
+ * (1) Implement a getter,
+ * (2) Implement a setter,
+ * (3) Add the attribute name to the list returned by the "getInitParam()"
  */
 
 public class RabbitsGrassSimulationModel extends SimModelImpl {		
 		
 	
-		//Attributs obligatoires (demand�s par le prof)
+		//Mandatory Attributes (as specified on the moodle)
 		private int gridSize = GRIDSIZE;
 		private int numInitRabbits = NUM_INIT_RABBITS;
 		private int numInitGrass = NUM_INIT_GRASS;
@@ -44,7 +39,7 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 		private int birthTreshold = BIRTHTRESHOLD;
 		private double grassEnergy = GRASSENERGY;
 		
-		//Valeurs par d�faults
+		//Default values
 		private static final int GRIDSIZE = 20;//Donn�e par le prof 
 		private static final int NUM_INIT_RABBITS = 30;
 		private static final int NUM_INIT_GRASS = 100;
@@ -53,8 +48,8 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 		private static final int GRASSENERGY = 5;
 		
 		
-		/*Attributs internes pour une simul'
-		 * Pas de getter et setter pour ces attributs � priori
+		/*Internal attributes
+		 * No getter or setter for those
 		 */
 		private RabbitsGrassSimulationSpace grassSpace;
 		private DisplaySurface displaySurf;
@@ -89,7 +84,7 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 		}
 		
 		
-		//Méthodes classiques d'un model
+		//Standard model methods
 		public static void main(String[] args) {
 			
 			System.out.println("Rabbit skeleton");
@@ -131,7 +126,6 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 					grassSpace.growGrass(grassGrowthRate);
 				}
 			}
-			//schedule.scheduleActionBeginning(0, new GrassGrowth());
 			
 			class RabbitsStep extends BasicAction {
 				public void execute() {
@@ -154,7 +148,6 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 				}
 				
 			}
-			//schedule.scheduleActionBeginning(0, new RabbitsStep());
 			
 			class GraphRecord extends BasicAction{
 				public void execute() {
@@ -285,7 +278,7 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 			grassEnergy = ge;
 		}
 		
-		//Getters pour chaque attribut (tenir � jour)
+		//Getters for each attribute
 		public String getName() {
 			return "RabbitsGrass Model";
 		}

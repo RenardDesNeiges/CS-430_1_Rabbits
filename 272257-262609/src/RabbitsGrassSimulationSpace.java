@@ -13,7 +13,8 @@ public class RabbitsGrassSimulationSpace {
 	private Object2DGrid rabbitsLand;
 	private int size;//Note that both grassLand and rabbitsLand are squares of the same size
 	
-	//Methodes ne concernant que l'espace
+	//Methods not concerning Agents (Rabbits)
+
 	public RabbitsGrassSimulationSpace(int size2) {
 		size = size2;
 		int zero = 0;
@@ -43,11 +44,6 @@ public class RabbitsGrassSimulationSpace {
 				count++;
 			}
 		}
-		/*Le reste n'est pas trop dûr à implémenter,
-		 * mais je n'ai pas compris s'il pouvait y avoir
-		 * plus d'une unité d'herbes en même temps sur la même case.
-		 * Je suis parti du principe que oui, mais à vérifier
-		 */
 	}
 	
 	public int getTotalGrass() {
@@ -61,7 +57,8 @@ public class RabbitsGrassSimulationSpace {
 		}
 		return res;
 	}
-	//Methodes faisant le lien avec les lapins
+	//Methods concerning Agents (Rabbits)
+	
 	public boolean isCellOcuppied(int x,int y) {
 		boolean res = false;
 		if(rabbitsLand.getObjectAt(x, y)!=null) {
