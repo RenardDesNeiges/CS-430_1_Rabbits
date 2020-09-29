@@ -35,22 +35,29 @@
 
 \section{Implementation}
 
-This section describes the main assumptions that were made in order to implement the simulation described on the Moodle.
+%This section describes the main assumptions that were made in order to implement the simulation described on the Moodle.
 
 \subsection{Assumptions}
 % Describe the assumptions of your world model and implementation (e.g. is the grass amount bounded in each cell) %
 
-\subsubsection{Implementation of grass and of it's growth}
+\subsubsection{Assumptions for the Implementation of grass and of it's growth}
 
-There can be either $1$ or $0$ unit of grass per cell. Initially the model is initialized with a user-set \textit{NumInitGrass} (default $100$) number of grass cells. Then at each simulation tick \textit{GrassGrowthRate} (default $50$) units of grass are added to empty cells if possible. This value is user defined and modifiable throughout the simulation.
+There can be either $1$ or $0$ unit of grass per cell. Initially the model is initialized with a user-set \textit{NumInitGrass} (default $100$) number of grass cells. Then at each simulation tick \textit{GrassGrowthRate} (default $50$) units of grass are added to empty cells \textbf{if possible}. This value is user defined and modifiable throughout the simulation.
 
-\subsubsection{Implementation of the movement of Rabbits and of collisions}
+\subsubsection{Assumptions for the Implementation of the movement of Rabbits and of collisions}
 
-At each tick each alive rabbit tries to move to a random cell picked among the 4 cells adjacent to it's location. If it tries to move to a cell where another rabbit is present, if the cell is empty it moves to it, if it is already occupied it doesn't move for this turn. Regardless of whether it actually moved or not the rabbit loses $1$ energy unit per tick.
+At each tick each alive rabbit tries to move to a random cell picked among the 4 cells adjacent to it's location. If it tries to move to a cell where another rabbit is present, \textbf{if the cell is empty it moves to it, if it is already occupied it doesn't move for this turn}. Regardless of whether it actually moved or not the rabbit loses $1$ energy unit per tick.
 
-\subsubsection{Implementation of feeding, energy and reproduction}
+\subsubsection{Assumptions for the Implementation of feeding, energy and reproduction}
 
-Each rabbit has an energy value $e \in [0,20]$
+Each rabbit has an energy value $e \in [0,20]$ this value drops by a unit of $1$ every turn. At each tick, rabbits "eat" grass after moving (in the new cell they moved to if they succeeded in moving). If there exists a unit of grass on the cell it's on the energy of the rabbit "eats" it (clearing the cell of grass) and the rabbit's energy increases by a value \textit{GrassEnergy} (default $5$) that is user-set and editable throughout the simulation. At each tick (before movement and feeding) if a rabbit has an energy value $e \geq \text{ \textit{BirthThreshold}}$ it gives birth (this means if a rabbit has gathered enough energy through eating it will give birth at the start of the next turn). \textit{BirthThreshold} (default $20$) is user set and editable throughout the simulation. 
+
+\subsubsection{Assumptions for the Implementation of birth and death}
+
+When giving birth, \textbf{the parent rabbit gives a random proportion of it's energy to it's child}, meaning it losses some random amount of it's energy. The repartition of energy between parent and child is the following : $e_{parent} + e_{child} = e_{\text{parent before birth}}$. 
+
+\subsubsection{Assumptions for the initialization of the sim}
+
 
 \subsection{Implementation Remarks}
 % Provide important details about your implementation, such as handling of boundary conditions %
