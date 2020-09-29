@@ -42,7 +42,7 @@
 
 \subsubsection{Assumptions for the Implementation of grass and of it's growth}
 
-There can be either $1$ or $0$ unit of grass per cell. Initially the model is initialized with a user-set \textit{NumInitGrass} (default $100$) number of grass cells. Then at each simulation tick \textit{GrassGrowthRate} (default $50$) units of grass are added to empty cells \textbf{if possible}. This value is user defined and modifiable throughout the simulation.
+There can be either $1$ or $0$ unit of grass per cell. At each simulation tick \textit{GrassGrowthRate} (default $50$) units of grass are added to empty cells \textbf{if possible}. This value is user defined and modifiable throughout the simulation.
 
 \subsubsection{Assumptions for the Implementation of the movement of Rabbits and of collisions}
 
@@ -54,15 +54,20 @@ Each rabbit has an energy value $e \in [0,20]$ this value drops by a unit of $1$
 
 \subsubsection{Assumptions for the Implementation of birth and death}
 
-When giving birth, \textbf{the parent rabbit gives a random proportion of it's energy to it's child}, meaning it losses some random amount of it's energy. The repartition of energy between parent and child is the following : $e_{parent} + e_{child} = e_{\text{parent before birth}}$. 
+When giving birth, \textbf{the parent rabbit gives a random proportion of it's energy to it's child}, meaning it losses some random amount of it's energy. The child inherits the exact amount of energy the parent lost when giving birth and appears on a random empty cell on the grid (the cell can have grass but no rabbit). The repartition of energy between parent and child is the following : $e_{parent} + e_{child} = e_{\text{parent before birth}}$. At each tick, after movement, feeding, and reproduction rabbits whose energy is $\leq 0$, die: they are removed from the simulation.
 
 \subsubsection{Assumptions for the initialization of the sim}
 
+The model is initialized with a user-set \textit{NumInitGrass} (default $100$) number of grass cells (if this amounts can possibly fit on the grid, if it cannot then there may be less grass in the simulation). A user set \textit{NumInitRabbits} (default $30$) defines the initial number of rabbits in a similar way to the grass. Initial rabbits are given a random amount of energy $e \in [0,20]$.
 
 \subsection{Implementation Remarks}
 % Provide important details about your implementation, such as handling of boundary conditions %
 
 %%talk about rabbit shuffling
+
+%%energy is a double value
+
+%%management of occupied cells and threshold
 
 \section{Results}
 % In this section, you study and describe how different variables (e.g. birth threshold, grass growth rate etc.) or combinations of variables influence the results. Different experiments with different settings are described below with your observations and analysis
