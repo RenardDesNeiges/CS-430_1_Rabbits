@@ -63,7 +63,7 @@ The model is initialized with a user-set \textit{NumInitGrass} (default $100$) n
 \subsection{Implementation Remarks}
 % Provide important details about your implementation, such as handling of boundary conditions %
 
-In our model implementation energy is stored as a \textit{double} value. The way the placement of new grass units and rabbits is handled is by picking a random position repeatedly until an empty cell is found, this operation can be repeated a finite number of times to avoid infinite loops in the case where no cell is free. This solution runs the risk of not finding a free spot in edge cases when there may actually be one but has the advantage of being relatively computationally inexpensive (in the most common case) compared to going through every single free cell every time.
+In our model implementation energy is stored as a \textit{double} value. The way the placement of new grass units and rabbits is handled is by picking a random position repeatedly until an empty cell is found, this operation can be repeated a finite number of times to avoid infinite loops in the case where no cell is free. This solution runs the risk of not finding a free spot in edge cases when there may actually be one but has the advantage of being relatively computationally inexpensive (in the most common case) compared to going through every single free cell every time. An alternative solution could be the storage of a separate list of every free cell but such an implementation would be quite memory-intensive for large size simulations.
 
 %%talk about rabbit shuffling
 
