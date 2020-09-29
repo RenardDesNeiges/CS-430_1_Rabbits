@@ -50,7 +50,7 @@ At each tick each alive rabbit tries to move to a random cell picked among the 4
 
 \subsubsection{Assumptions for the Implementation of feeding, energy and reproduction}
 
-Each rabbit has an energy value $e \in [0,20]$. At each tick, rabbits "eat" grass after moving. If there exists a unit of grass on the cell it's on the rabbit "eats" it, it's energy increases by a value \textit{GrassEnergy} (default $5$). At each tick if a rabbit has an energy value $e \geq \text{ \textit{BirthThreshold}}$ it gives birth (this means if a rabbit has gathered enough energy through eating it will give birth at the start of the next turn).
+Each rabbit has an energy value $e \in [0,20]$. At each tick, if there exists a unit of grass on the cell it's on the rabbit "eats" it, it's energy increases by a user-set value. At each tick if a rabbit has an energy value $e \geq \text{ \textit{BirthThreshold}}$ it gives birth.
 
 \subsubsection{Assumptions for the Implementation of birth and death}
 
@@ -58,12 +58,14 @@ When giving birth, \textbf{the parent rabbit gives a random proportion of it's e
 
 \subsubsection{Assumptions for the initialization of the sim}
 
-The model is initialized with a user-set \textit{NumInitGrass} (default $100$) number of grass cells (if this amounts can possibly fit on the grid, if it cannot then there may be less grass in the simulation). A user set \textit{NumInitRabbits} (default $30$) defines the initial number of rabbits in a similar way to the grass. Initial rabbits are given a random amount of energy $e \in [0,20]$.
+The model is initialized with a user-set number of grass cells and rabbits. Initial rabbits are given a random amount of energy $e \in [0,20]$.
 
 \subsection{Implementation Remarks}
 % Provide important details about your implementation, such as handling of boundary conditions %
 
-In our model implementation energy is stored as a \textit{double} value. The way the placement of new grass units and rabbits is handled is by picking a random position repeatedly until an empty cell is found, this operation can be repeated a finite number of times to avoid infinite loops in the case where no cell is free. This solution runs the risk of not finding a free spot in edge cases when there may actually be one but has the advantage of being relatively computationally inexpensive (in the most common case) compared to going through every single free cell every time. An alternative solution could be the storage of a separate list of every free cell but such an implementation would be quite memory-intensive for large size simulations.
+%The way the placement of new grass units and rabbits is handled is by picking a random position repeatedly until an empty cell is found, this operation can be repeated a finite number of times to avoid infinite loops in the case where no cell is free. This solution runs the risk of not finding a free spot in edge cases when there may actually be one but has the advantage of being relatively computationally inexpensive (in the most common case) compared to going through every single free cell every time. ==> commented out of the paragraph
+
+In our model implementation energy is stored as a \textit{double} value. An alternative solution could be the storage of a separate list of every free cell but such an implementation would be quite memory-intensive for large size simulations.
 
 \section{Results}
 % In this section, you study and describe how different variables (e.g. birth threshold, grass growth rate etc.) or combinations of variables influence the results. Different experiments with different settings are described below with your observations and analysis
@@ -71,7 +73,7 @@ In our model implementation energy is stored as a \textit{double} value. The way
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.4\textwidth]{plots/sim1.png}
-    \includegraphics[width=0.4\textwidth]{plots/sim1_st.png}
+    \includegraphics[width=0.4\textwidth]{plots/ggrate.png}
     \caption{Lineplots of the rabbits (in red) and grass (in green) populations over the first 400 ticks of the reference simulation (left) and over 200 ticks of a stable regime (right):}
     \label{figure}
   \end{figure}
@@ -84,24 +86,14 @@ Default run : this will be our reference run. We will study the evaluation the s
 
 \subsubsection{Observations} 
 
-We observe that the default run (Figure \ref{figure}, left) converges in around $100$ ticks to a stable regime where the prey and population oscillate 
+We observe that the default run (Figure \ref{figure}, left) converges in around $100$ ticks to a stable regime where the prey and predator populations (number of individuals) oscillate around equilibrium values. This is consistent with how typical solutions of Lokta-Volterra equations should behave.
 
 % Elaborate on the observed results %
 
-\subsection{Experiment 2}
+\subsection{Reaction of the simulation to variation in parameters}
 
-\subsubsection{Setting}
+We will now describe the way the model behaves in reaction to various parameters. First, let's observe that since the populations converge towards an equilibrium, as long as the initial populations of grass is sufficiently high so that the rabbit population does not die off, the initial populations values only have an influence on the transient response of the system, not on the stable state it converges to. \\
 
-\subsubsection{Observations}
-% Elaborate on the observed results %
-
-\vdots
-
-\subsection{Experiment n}
-
-\subsubsection{Setting}
-
-\subsubsection{Observations}
-% Elaborate on the observed results %
+As long as the \textit{BirthThreshold} value has little effect on the rabbit population as long as it's relatively high ($>10$) when it becomes really low it starts to make the rabbit populations fall since the rabbits who just reproduced and their children die because of reproduction.
 
 \end{document}
