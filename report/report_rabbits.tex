@@ -50,7 +50,7 @@ At each tick each alive rabbit tries to move to a random cell picked among the 4
 
 \subsubsection{Assumptions for the Implementation of feeding, energy and reproduction}
 
-Each rabbit has an energy value $e \in [0,20]$ this value drops by a unit of $1$ every turn. At each tick, rabbits "eat" grass after moving (in the new cell they moved to if they succeeded in moving). If there exists a unit of grass on the cell it's on the energy of the rabbit "eats" it (clearing the cell of grass) and the rabbit's energy increases by a value \textit{GrassEnergy} (default $5$) that is user-set and editable throughout the simulation. At each tick (before movement and feeding) if a rabbit has an energy value $e \geq \text{ \textit{BirthThreshold}}$ it gives birth (this means if a rabbit has gathered enough energy through eating it will give birth at the start of the next turn). \textit{BirthThreshold} (default $20$) is user set and editable throughout the simulation. 
+Each rabbit has an energy value $e \in [0,20]$. At each tick, rabbits "eat" grass after moving. If there exists a unit of grass on the cell it's on the rabbit "eats" it, it's energy increases by a value \textit{GrassEnergy} (default $5$). At each tick if a rabbit has an energy value $e \geq \text{ \textit{BirthThreshold}}$ it gives birth (this means if a rabbit has gathered enough energy through eating it will give birth at the start of the next turn).
 
 \subsubsection{Assumptions for the Implementation of birth and death}
 
@@ -71,17 +71,20 @@ In our model implementation energy is stored as a \textit{double} value. The way
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.4\textwidth]{plots/sim1.png}
-    \includegraphics[width=0.4\textwidth]{plots/sim4.png}
-    \caption{Plot of the rabbits (in red) and grass (in green) populations over the first 400 ticks of the reference simulation:}
+    \includegraphics[width=0.4\textwidth]{plots/sim1_st.png}
+    \caption{Lineplots of the rabbits (in red) and grass (in green) populations over the first 400 ticks of the reference simulation (left) and over 200 ticks of a stable regime (right):}
+    \label{figure}
   \end{figure}
 
 \subsection{Experiment 1 : reference run}
 
 \subsubsection{Setting}
 
-Default run : this will be our reference run. We will study the evaluation the simulation properties around those reference parameters. 
+Default run : this will be our reference run. We will study the evaluation the simulation properties around those reference parameters.
 
-\subsubsection{Observations}
+\subsubsection{Observations} 
+
+We observe that the default run (Figure \ref{figure}, left) converges in around $100$ ticks to a stable regime where the prey and population oscillate 
 
 % Elaborate on the observed results %
 
