@@ -54,7 +54,7 @@ Each rabbit has an energy value $e \in [0,20]$ this value drops by a unit of $1$
 
 \subsubsection{Assumptions for the Implementation of birth and death}
 
-When giving birth, \textbf{the parent rabbit gives a random proportion of it's energy to it's child}, meaning it losses some random amount of it's energy. The child inherits the exact amount of energy the parent lost when giving birth and appears on a random empty cell on the grid (the cell can have grass but no rabbit). The repartition of energy between parent and child is the following : $e_{parent} + e_{child} = e_{\text{parent before birth}}$. At each tick, after movement, feeding, and reproduction rabbits whose energy is $\leq 0$, die: they are removed from the simulation.
+When giving birth, \textbf{the parent rabbit gives a random proportion of it's energy to it's child}, meaning it losses some random amount of it's energy. The child inherits the exact amount of energy the parent lost when giving birth and appears on a random empty cell on the grid (the cell can have grass but no rabbit). The repartition of energy between parent and child is the following : $e_{parent} + e_{child} = e_{\text{\textit{parent before birth}}}$. At each tick, after movement, feeding, and reproduction rabbits whose energy is $\leq 0$, die: they are removed from the simulation.
 
 \subsubsection{Assumptions for the initialization of the sim}
 
@@ -65,20 +65,24 @@ The model is initialized with a user-set \textit{NumInitGrass} (default $100$) n
 
 In our model implementation energy is stored as a \textit{double} value. The way the placement of new grass units and rabbits is handled is by picking a random position repeatedly until an empty cell is found, this operation can be repeated a finite number of times to avoid infinite loops in the case where no cell is free. This solution runs the risk of not finding a free spot in edge cases when there may actually be one but has the advantage of being relatively computationally inexpensive (in the most common case) compared to going through every single free cell every time. An alternative solution could be the storage of a separate list of every free cell but such an implementation would be quite memory-intensive for large size simulations.
 
-%%talk about rabbit shuffling
-
-%%energy is a double value
-
-%%management of occupied cells and threshold
-
 \section{Results}
 % In this section, you study and describe how different variables (e.g. birth threshold, grass growth rate etc.) or combinations of variables influence the results. Different experiments with different settings are described below with your observations and analysis
 
-\subsection{Experiment 1}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.4\textwidth]{plots/sim1.png}
+    \includegraphics[width=0.4\textwidth]{plots/sim1.png}
+    \caption{Plot of the rabbits (in red) and grass (in green) populations over the first 400 ticks of the reference simulation:}
+  \end{figure}
+
+\subsection{Experiment 1 : reference run}
 
 \subsubsection{Setting}
 
+Default run : this will be our reference run. We will study the evaluation the simulation properties around those reference parameters. 
+
 \subsubsection{Observations}
+
 % Elaborate on the observed results %
 
 \subsection{Experiment 2}
