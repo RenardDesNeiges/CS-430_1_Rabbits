@@ -40,7 +40,7 @@
 \subsection{Assumptions}
 % Describe the assumptions of your world model and implementation (e.g. is the grass amount bounded in each cell) %
 
-\subsubsection{Assumptions for the Implementation of grass and of it's growth}
+\subsubsection{Assumptions for the Implementation of grass and of its growth}
 
 There can be either $1$ or $0$ unit of grass per cell. At each simulation tick \textit{GrassGrowthRate} (default $50$) units of grass are added to empty cells \textbf{if possible}. This value is user defined and modifiable throughout the simulation.
 
@@ -56,7 +56,7 @@ Each rabbit has an energy value $e \in [0,20]$. At each tick, if there exists a 
 
 When giving birth, \textbf{the parent rabbit gives a random proportion of it's energy to it's child}, meaning it losses some random amount of it's energy. The child inherits the exact amount of energy the parent lost when giving birth and appears on a random empty cell on the grid (the cell can have grass but no rabbit). The repartition of energy between parent and child is the following : $e_{parent} + e_{child} = e_{\text{\textit{parent before birth}}}$. At each tick, after movement, feeding, and reproduction rabbits whose energy is $\leq 0$, die: they are removed from the simulation.
 
-\subsubsection{Assumptions for the initialization of the sim}
+\subsubsection{Assumptions for the initialization of the simulation}
 
 The model is initialized with a user-set number of grass cells and rabbits. Initial rabbits are given a random amount of energy $e \in [0,20]$.
 
